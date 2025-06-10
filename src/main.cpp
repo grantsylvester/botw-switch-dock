@@ -1,18 +1,31 @@
-#include <Arduino.h>
-
-// put function declarations here:
-int myFunction(int, int);
+#include "main.h"
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  
+  //PIN MODES
+  pinMode(LED_DATA, OUTPUT);
+  pinMode(DOCK_DET, INPUT_PULLUP);
+
+  //Strip Initiation
+  strip.begin();
+  strip.setBrightness(50);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  while(digitalRead(DOCK_DET) != LOW) {}
+  colorWipe(strip.Color(0, 0, 255), 25);
+  delay(500);
+  colorWipe(strip.Color(0, 255, 0), 25);
+  delay(500);
+  colorWipe(strip.Color(255, 0, 0), 25);
+  delay(500);
 }
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+//Taken from the strandtest example in the FastLED Neopixel Library
+void colorWipe(uint32_t color, unsigned long wait) {
+	for (unsigned int i = 0; i < strip.numPixels(); i++) {
+		strip.setPixelColor(i, color);
+		strip.show();
+		delay(wait);
+	}
 }
