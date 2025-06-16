@@ -13,11 +13,11 @@ void setup() {
 
 void loop() {
   while(digitalRead(DOCK_DET) != LOW) {}
-  smoothFlash(10 * 256, 255, 255, 5);
+  smoothFlash(10 * 255, 255, 255, 5);
   delay(300);
   smoothSnake(100);
   smoothSnake(100);
-  smoothFlash(128 * 256, 255, 255, 10);
+  smoothFlash(128 * 255, 255, 255, 10);
   blank(0);
 }
 
@@ -65,17 +65,21 @@ void smoothFlash(uint16_t hue, uint8_t sat, int max_value, unsigned long wait) {
  */
 void smoothSnake(unsigned long wait) {
   for(int cur = -1; cur < 14; cur++) { //cursor will move through the outer circle of pattern
-    for(int i = 0; i < 12; i++) {
-      strip.setPixelColor(i, strip.Color(100, 20, 0));
+    for(int i = 0; i < strip.numPixels(); i++) {
+      if(i <= 11) {
+        strip.setPixelColor(i, strip.ColorHSV(10 * 255, 255, 50));
+      } else {
+        strip.setPixelColor(i, strip.ColorHSV(10 * 255, 255, 200));
+      }
     }
     if(cur - 1 >= 0 && cur - 1 <= 11) {
-      strip.setPixelColor(cur - 1, strip.Color(0, 20, 20)); //medium brightness
+      strip.setPixelColor(cur - 1, strip.ColorHSV(128 * 255, 255, 100)); //medium brightness
     }
     if(cur >= 0 && cur <= 11) {
-      strip.setPixelColor(cur, strip.Color(0, 255, 255)); //max brightness
+      strip.setPixelColor(cur, strip.Color(128 * 255, 255, 255)); //max brightness
     }
     if(cur + 1 >= 0 && cur + 1 <= 11) {
-      strip.setPixelColor(cur + 1, strip.Color(0, 20, 20)); //medium brightness
+      strip.setPixelColor(cur + 1, strip.Color(128 * 255, 255, 100)); //medium brightness
     }
 
     strip.show();
