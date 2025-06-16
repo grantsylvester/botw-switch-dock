@@ -17,7 +17,7 @@ FastLED_NeoPixel<NUM_LEDS, LED_DATA, NEO_GRB> strip;
 //Function Declarations
 void colorWipe(uint32_t color, unsigned long wait);
 void blank(unsigned long wait);
-void smoothFlash();
+void smoothFlash(uint16_t hue, uint8_t sat, int max_value, unsigned long wait);
 void smoothSnake(unsigned long wait);
 
 #endif

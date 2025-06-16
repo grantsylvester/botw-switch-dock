@@ -13,18 +13,12 @@ void setup() {
 
 void loop() {
   while(digitalRead(DOCK_DET) != LOW) {}
-  colorWipe(strip.Color(255, 100, 0), 0);
+  smoothFlash(10 * 256, 255, 255, 5);
   delay(300);
   smoothSnake(100);
   smoothSnake(100);
-  blank(300);
-  colorWipe(strip.Color(0, 0, 255), 0);
-  delay(300);
+  smoothFlash(128 * 256, 255, 255, 10);
   blank(0);
-  // colorWipe(strip.Color(255, 100, 0), 0);
-  // colorWipe(strip.Color(0,0,50), 50);
-  // colorWipe(strip.Color(0,0,100), 50);
-  // colorWipe(strip.Color(0,0,255), 50);
 }
 
 //Taken from the strandtest example in the FastLED Neopixel Library
@@ -43,9 +37,26 @@ void blank(unsigned long wait) {
 
 /**
  * @brief the "whoosh" at the end of the LED sequence
+ * @param hue: uint16_t HSV Hue (scale H to 255 then multiply by 255)
+ * @param sat: uint8_t HSV Saturation
+ * @param max_value: int peak brightness of flash
+ * @param wait: delay between each change in brightness
  */
-void smoothFlash() {
-  
+void smoothFlash(uint16_t hue, uint8_t sat, int max_value, unsigned long wait) {
+  for(int value = 0; value <= max_value; value += 5) {
+    for(unsigned int i = 0; i < strip.numPixels(); i++) {
+      strip.setPixelColor(i, strip.ColorHSV(hue, sat, value));
+    }
+    strip.show();
+    delay(wait);
+  }
+  for(int value = max_value; value >= 0; value -= 5) {
+    for(unsigned int i = 0; i < strip.numPixels(); i++) {
+      strip.setPixelColor(i, strip.ColorHSV(hue, sat, value));
+    }
+    strip.show();
+    delay(wait);
+  }
 }
 
 /**
@@ -55,16 +66,16 @@ void smoothFlash() {
 void smoothSnake(unsigned long wait) {
   for(int cur = -1; cur < 14; cur++) { //cursor will move through the outer circle of pattern
     for(int i = 0; i < 12; i++) {
-      strip.setPixelColor(i, strip.Color(20, 4, 0));
+      strip.setPixelColor(i, strip.Color(100, 20, 0));
     }
     if(cur - 1 >= 0 && cur - 1 <= 11) {
-      strip.setPixelColor(cur - 1, strip.Color(0, 0, 20)); //medium brightness
+      strip.setPixelColor(cur - 1, strip.Color(0, 20, 20)); //medium brightness
     }
     if(cur >= 0 && cur <= 11) {
-      strip.setPixelColor(cur, strip.Color(0, 0, 255)); //max brightness
+      strip.setPixelColor(cur, strip.Color(0, 255, 255)); //max brightness
     }
     if(cur + 1 >= 0 && cur + 1 <= 11) {
-      strip.setPixelColor(cur + 1, strip.Color(0, 0, 20)); //medium brightness
+      strip.setPixelColor(cur + 1, strip.Color(0, 20, 20)); //medium brightness
     }
 
     strip.show();
