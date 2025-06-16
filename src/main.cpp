@@ -76,10 +76,10 @@ void smoothSnake(unsigned long wait) {
       strip.setPixelColor(cur - 1, strip.ColorHSV(128 * 255, 255, 100)); //medium brightness
     }
     if(cur >= 0 && cur <= 11) {
-      strip.setPixelColor(cur, strip.Color(128 * 255, 255, 255)); //max brightness
+      strip.setPixelColor(cur, strip.ColorHSV(128 * 255, 255, 255)); //max brightness
     }
     if(cur + 1 >= 0 && cur + 1 <= 11) {
-      strip.setPixelColor(cur + 1, strip.Color(128 * 255, 255, 100)); //medium brightness
+      strip.setPixelColor(cur + 1, strip.ColorHSV(128 * 255, 255, 100)); //medium brightness
     }
 
     strip.show();
